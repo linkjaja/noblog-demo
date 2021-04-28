@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head th:replace="admin/_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noblog | category</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../../static/css/me.css">
+</head>
+<body>
+
+  <!--导航-->
+  <nav th:replace="admin/_fragments :: menu(2)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small" >
+    <div class="ui container">
+      <div class="ui inverted secondary stackable menu">
+        <h2 class="ui teal header item">Dashboard</h2>
+        <a href="#" class=" m-item item m-mobile-hide"><i class=" home icon"></i>Blog</a>
+        <a href="#" class="active m-item item m-mobile-hide"><i class=" idea icon"></i>Category</a>
+        <a href="#" class="m-item item m-mobile-hide"><i class=" tags icon"></i>Tag</a>
+        <div class="right m-item m-mobile-hide menu">
+          <div class="ui dropdown  item">
+            <div class="text">
+              <img class="ui avatar image" src="https://unsplash.it/100/100?image=1005">
+              李仁密
+            </div>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <a href="#" class="item">Log out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+      <i class="sidebar icon"></i>
+    </a>
+  </nav>
+  <div class="ui attached pointing menu">
+    <div class="ui container">
+      <div class="right menu">
+        <a href="#" th:href="@{/admin/types/input}" class="item">Add</a>
+        <a href="#" th:href="@{/admin/types}" class="brown active item">List</a>
+      </div>
+    </div>
+  </div>
+
+  <!--中间内容-->
+  <div  class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+      <!--notification-->
+      <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+        <i class="close icon"></i>
+        <div class="header">Notification:</div>
+        <p th:text="${message}">Operation success</p>
+      </div>
+      <!--table-->
+      <table class="ui celled table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Type-Category</th>
+            <th>Operation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="type,iterStat : ${page.content}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${type.name}">abcd</td>
+            <td>
+              <a href="#" th:href="@{/admin/types/{id}/input(id=${type.id})}" class="ui mini teal basic button">Edit</a>
+              <a href="#" th:href="@{/admin/types/{id}/delete(id=${type.id})}" class="ui mini red basic button">Delete</a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="6">
+              <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
+                <a th:href="@{/admin/types(page=${page.number}-1)}" class=" item" th:unless="${page.first}"><i class="left chevron icon"></i></a>
+                <a th:href="@{/admin/types(page=${page.number}+1)}" class=" item" th:unless="${page.last}"><i class="right chevron icon"></i></a>
+              </div>
+              <a href="#" th:href="@{/admin/types/input}" class="ui mini right floated teal basic button">Add</a>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <br>
+  <br>
+  <!--底部footer-->
+  <footer th:replace="admin/_fragments :: footer"></footer>
+
+  <!--/*/<th:block th:replace="_fragments :: script">/*/-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <!--/*/</th:block>/*/-->
+
+  <script>
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+      on : 'hover'
+    });
+
+    //close notification
+    $('.message .close')
+            .on('click', function () {
+              $(this)
+                      .closest('.message')
+                      .transition('fade');
+            });
+
+  </script>
+</body>
+</html>

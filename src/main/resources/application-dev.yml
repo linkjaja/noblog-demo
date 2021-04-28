@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test_for_blog?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 
+  jpa:
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: false
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    generate-ddl: true
+    open-in-view: false
+
+
+logging:
+  level:
+    root: info
+    com.late: debug
+  file:
+    path: log/noblog-dev.log

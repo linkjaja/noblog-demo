@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="admin/_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noblog | blog</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+  <link rel="stylesheet" href="../../static/css/me.css">
+</head>
+<body>
+
+<!-- Nav bar-->
+<nav th:replace="admin/_fragments :: menu(1)"></nav>
+<!-- Sub bar-->
+<div class="ui attached pointing menu">
+  <div class="ui container" >
+    <div class="right menu">
+      <a href="#" th:href="@{/admin/blogs/input}" class="item">Add</a>
+      <a href="#" th:href="@{/admin/blogs}" class="brown active item">List</a>
+    </div>
+  </div>
+</div>
+
+  <!--Content-->
+  <div  class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+      <div class="ui secondary segment form">
+        <input type="hidden" name="page">
+        <div class="inline fields">
+          <div class="field">
+            <input type="text" name="title" placeholder="Title">
+          </div>
+          <div class="field">
+            <div class="ui labeled action input">
+              <div class="ui type selection dropdown">
+                <input type="hidden" name="type.id">
+                <i class="dropdown icon"></i>
+                <div class="default text">Type</div>
+                <div class="menu">
+                  <div th:each="type : ${types}" class="item" data-value="1" th:data-value="${type.id}" th:text="${type.name}">Error</div>
+                  <!---/*--->
+                  <div class="item" data-value="2">Log</div>
+                  <!---*/--->
+                </div>
+              </div>
+              <button id="clear-btn" class="ui compact button">clear</button>
+            </div>
+
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" id="recommend" name="recommend">
+              <label for="recommend">Recommend</label>
+            </div>
+          </div>
+          <div class="field">
+            <button type="button" id="search-btn" class="ui mini brown basic button"><i class="search icon"></i>Search</button>
+          </div>
+        </div>
+      </div>
+
+      <!--table-->
+      <div id="table-container">
+        <table th:fragment="blogList" class="ui compact grey table">
+          <thead>
+          <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Recommend</th>
+            <th>Published</th>
+            <th>Update time</th>
+            <th class="right aligned">Operation</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="blog, iterStat : ${page.content}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${blog.title}">西瓜</td>
+            <td th:text="${blog.type.name}">水果</td>
+            <td th:text="${blog.recommend? 'Yes' : 'No'}">是</td>
+            <td th:text="${blog.published? 'Yes' : 'No'}">是</td>
+            <td th:text="${blog.updateTime}">2020-02-02</td>
+            <td class="right aligned">
+              <a href="#" th:href="@{/admin/blogs/{id}/input(id=${blog.id})}"  class="ui mini teal basic button"> Edit </a>
+              <a href="#" th:href="@{/admin/blogs/{id}/delete(id=${blog.id})}" class="ui mini red basic button"> Delete </a>
+            </td>
+          </tr>
+          </tbody>
+          <tfoot>
+          <tr>
+            <th colspan="7">
+              <div class="ui mini pagination menu" th:if="${page.totalPages} > 1">
+                <a onclick="page(this)" th:attr="data-page=${page.number}-1" class=" item" th:unless="${page.first}">
+                  <i class="left chevron icon"></i>
+                </a>
+                <a onclick="page(this)" th:attr="data-page=${page.number}+1" class=" item" th:unless="${page.last}">
+                  <i class="right chevron icon"></i>
+                </a>
+              </div>
+              <a href="#" th:href="@{/admin/blogs/input}" class="ui mini right floated teal basic button">Add</a>
+            </th>
+          </tr>
+          </tfoot>
+        </table>
+
+        <!--notification-->
+        <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+          <i class="close icon"></i>
+          <div class="header">Notification:</div>
+          <p th:text="${message}">Operation success</p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <br>
+  <br>
+  <!--Footer-->
+  <footer th:replace="admin/_fragments :: footer"></footer>
+
+  <!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+  <script src="../../static/lib/editormd/editormd.min.js"></script>
+  <!--/*/</th:block>/*/-->
+
+  <script>
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('.ui.dropdown').dropdown({
+      on : 'hover'
+    });
+
+    $('#clear-btn')
+            .on('click', function() {
+              $('.ui.type.dropdown')
+                      .dropdown('clear')
+              ;
+            })
+    ;
+
+    function page(obj){
+      $("[name='page']").val($(obj).data("page"));
+      loaddata();
+    }
+
+    $("#search-btn").click(function () {
+      $("[name='page']").val(0);
+      loaddata();
+    });
+
+    function loaddata() {
+      $("#table-container").load(/*[[@{/admin/blogs/search}]]*/"/admin/blogs/search",{
+        title : $("[name='title']").val(),
+        typeId : $("[name='typeId']").val(),
+        recommend : $("[name='recommend']").prop('checked'),
+        page : $("[name='page']").val()
+      });
+    }
+
+    //close notification
+    $('.message .close')
+            .on('click', function () {
+              $(this)
+                      .closest('.message')
+                      .transition('fade');
+            });
+
+  </script>
+</body>
+</html>
