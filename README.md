@@ -1,19 +1,19 @@
 ## Personal Blog Demo
-an elegant, light-weighted personal blog（***Noblog*** v1.1）
+An elegant, light-weighted personal blog（***Noblog*** v1.1）
 
 * Screen Shot of This Demo
 
 ![Readme image](demo.png)
 
-* more demo screen shot [(*baidu cloud*)](https://pan.baidu.com/s/1SBoDtkSoNmIo_7j8jAuz4g)  password: fnpf
+* More demo screen shot [(*baidu cloud*)](https://pan.baidu.com/s/1SBoDtkSoNmIo_7j8jAuz4g)  password: fnpf
 
-### tech stack
+### Tech stack
 
 * Backend: *spring boot, JPA*
 * Database: *MySQL*
 * Frontend: *thymeleaf, semantic ui*
 
-### tools & environment
+### Tools & Environment
 
 - IntelliJ IDEA
 - Navicat Premium 12
@@ -61,9 +61,9 @@ spring:
     open-in-view: false
 ```
 
-Default: http://127.0.0.1:8080/
+**Default**: http://127.0.0.1:8080/
 
-Back-Stage login
+**Back-Stage login**
 
 * Username: admin
 * Password: 12345
