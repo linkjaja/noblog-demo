@@ -3,6 +3,10 @@ an elegant, light-weighted personal blog（***Noblog*** v1.1）
 
 * Screen Shot of This Demo
 
+![Readme image](demo.png)
+
+* more demo screen shot [(*baidu cloud*)](https://pan.baidu.com/s/1SBoDtkSoNmIo_7j8jAuz4g)  password: fnpf
+
 ### tech stack
 
 * Backend: *spring boot, JPA*
@@ -58,6 +62,11 @@ spring:
 ```
 
 Default: http://127.0.0.1:8080/
+
+Back-Stage login
+
+* Username: admin
+* Password: 12345
 
 ### Credits
 
